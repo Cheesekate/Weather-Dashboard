@@ -139,7 +139,9 @@ $(".weatherDashboard").show();
 if (citylist.includes(cityName)) {
     return;
 }
-citylist.push(cityName);
+
+
+citylist.push(cityName)
 localStorage.setItem("cities", JSON.stringify(citylist));
 const navItemOuterEl = $("<li class='nav-item'>");
 navItemOuterEl.appendTo("#citylist");
@@ -152,5 +154,4 @@ $(
 )
     .css("textTransform", "capitalize")
     .appendTo(navItemOuterEl);
-}
-
+)
