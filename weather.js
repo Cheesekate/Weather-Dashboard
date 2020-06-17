@@ -34,3 +34,123 @@ function weather(citySearch) {
         var lon = oneDay.coord.lon;
 
 
+        if (responseUVIndex.value > 0 && responseUVIndex.value <= 4) {
+            $(".uvIndex").attr("class", "uvIndex bg-success pl-3");
+        } else if (responseUVIndex.value > 4 && responseUVIndex.value <= 8) {
+            $(".uvIndex").attr("class", "uvIndex bg-warning pl-3");
+        } else if (responseUVIndex.value > 8) {
+            $(".uvIndex").attr("class", "uvIndex bg-danger pl-3");
+        }
+
+    });
+});
+
+const apiFive =
+    `https://api.openweathermap.org/data/2.5/forecast?q=${cityName}&appid=${apiKey}&units=imperial`;
+$.ajax({
+    url: apiFive,
+    method: "GET",
+}).then(function (fiveDays) {
+    var dayOne = $("<div>");
+    var dayTwo = $("<div>");
+    var dayThree = $("<div>");
+    var dayFour = $("<div>");
+    var dayFive = $("<div>");
+
+    dayOne.attr("class", "d-inline-block bg-primary p-3 text-black");
+    dayTwo.attr("class", "d-inline-block bg-primary p-3 text-black");
+    dayThree.attr("class", "d-inline-block bg-primary p-3 text-black");
+    dayFour.attr("class", "d-inline-block bg-primary p-3 text-black");
+    dayFive.attr("class", "d-inline-block bg-primary p-3 text-black");
+
+    var dayOneDiv = $("<div>");
+    var dayTwoDiv = $("<div>");
+    var dayThreeDiv = $("<div>");
+    var dayFourDiv = $("<div>");
+    var dayFiveDiv = $("<div>");
+
+    dayOneDiv.text(
+        "Day 1 " + fiveDays.list[4].weather[0].icon
+    );
+    dayTwoDiv.text(
+        "Day 2 " + fiveDays.list[12].weather[0].icon
+    );
+    dayThreeDiv.text(
+        "Day 3 " + fiveDays.list[20].weather[0].icon
+    );
+    dayFourDiv.text(
+        "Day 4 " + fiveDays.list[28].weather[0].icon
+    );
+    dayFiveDiv.text(
+        "Day 5 " + fiveDays.list[36].weather[0].icon
+    );
+
+    var dayOnetemp = $("<div>");
+    var dayTwotemp = $("<div>");
+    var dayThreetemp = $("<div>");
+    var dayFourtemp = $("<div>");
+    var dayFivetemp = $("<div>");
+
+    dayOnetemp.text("Day 1: " + fiveDays.list[4].main.temp);
+    dayTwotemp.text("Day 2: " + fiveDays.list[12].main.temp);
+    dayThreetemp.text("Day 3: " + fiveDays.list[20].main.temp);
+    dayFourtemp.text("Day 4: " + fiveDays.list[28].main.temp);
+    dayFivetemp.text("Day 5: " + fiveDays.list[36].main.temp);
+
+    var dayOnehumidity = $("<div>");
+    var dayTwohumidity = $("<div>");
+    var dayThreehumidity = $("<div>");
+    var dayFourhumidity = $("<div>");
+    var dayFivehumidity = $("<div>");
+
+    dayOnehumidity.text(
+        "Day 1 " + fiveDays.list[4].main.humidity
+    );
+    dayTwohumidity.text(
+        "Day 2 " + fiveDays.list[12].main.humidity
+    );
+    dayThreehumidity.text(
+        "Day 3 " + fiveDays.list[20].main.humidity
+    );
+    dayFourhumidity.text(
+        "Day 4 " + fiveDays.list[28].main.humidity
+    );
+    dayFivehumidity.text(
+        "Day 5 " + fiveDays.list[36].main.humidity
+    );
+
+    $("#fiveDayForecast").empty();
+
+    // Append children
+    $("#fiveDayForecast").append(dayOne, dayTwo, dayThree, dayFour, dayFive);
+    // parent.append(nameOfChildHere);
+    dayOne.append(dayOneDiv, dayOnetemp, dayOnehumidity);
+    dayTwo.append(dayTwoDiv, dayTwotemp, dayTwohumidity);
+    dayThree.append(dayThreeDiv, dayThreetemp, dayThreehumidity);
+    dayFour.append(dayFourDiv, dayFourtemp, dayFourhumidity);
+    dayFive.append(dayFiveDiv, dayFivetemp, dayFivehumidity);
+
+
+});
+
+// local storage goes here
+$(".weatherDashboard").show();
+
+if (citylist.includes(cityName)) {
+    return;
+}
+citylist.push(cityName);
+localStorage.setItem("cities", JSON.stringify(citylist));
+const navItemOuterEl = $("<li class='nav-item'>");
+navItemOuterEl.appendTo("#citylist");
+
+
+$(
+    '<a class="nav-link active list-group-item bg-black text-dark border-light text-center" href="#">' +
+    cityName +
+    "</a>"
+)
+    .css("textTransform", "capitalize")
+    .appendTo(navItemOuterEl);
+}
+
